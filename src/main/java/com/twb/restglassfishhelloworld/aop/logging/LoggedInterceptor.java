@@ -5,23 +5,25 @@ import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 
-import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Logged
 @Interceptor
 @Priority(Interceptor.Priority.APPLICATION)
 public class LoggedInterceptor {
-    private static final Logger logger = Logger.getLogger(LoggedInterceptor.class.getName());
 
     @AroundInvoke
     public Object logMethodInvocation(InvocationContext context) throws Exception {
-        System.out.println("LoggedInterceptor.logMethodInvocation");
-        logger.info(MessageFormat.format("Entering method: {0}", context.getMethod().getName()));
+        String className = context.getTarget().getClass().getCanonicalName();
+        String methodName = context.getMethod().getName();
+        Object[] parameters = context.getParameters();
 
+        Logger logger = Logger.getLogger(className);
+
+        logger.info(() -> String.format("Entering %s(%s)", methodName, Arrays.toString(parameters)));
         Object result = context.proceed();
-
-        logger.info(MessageFormat.format("Exiting method: {0}", context.getMethod().getName()));
+        logger.info(() -> String.format("Exiting %s(%s)", methodName, Arrays.toString(parameters)));
         return result;
     }
 }
