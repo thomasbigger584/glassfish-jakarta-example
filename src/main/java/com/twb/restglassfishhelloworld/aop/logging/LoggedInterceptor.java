@@ -18,12 +18,13 @@ public class LoggedInterceptor {
         String className = context.getTarget().getClass().getSimpleName();
         String methodName = context.getMethod().getName();
         Object[] parameters = context.getParameters();
+        String parameterString = Arrays.toString(parameters)
+                .replace("[", "").replace("]", "");
+        Logger logger = Logger.getLogger(className.split("\\$")[0]);
 
-        Logger logger = Logger.getLogger(className);
-
-        logger.info(() -> String.format("Entering %s(%s)", methodName, Arrays.toString(parameters)));
+        logger.info(() -> String.format("Entering %s(%s)", methodName, parameterString));
         Object result = context.proceed();
-        logger.info(() -> String.format("Exiting %s(%s)", methodName, Arrays.toString(parameters)));
+        logger.info(() -> String.format("Exiting %s(%s) - %s", methodName, parameterString, result));
         return result;
     }
 }
