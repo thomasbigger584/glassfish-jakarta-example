@@ -1,6 +1,11 @@
 package com.twb.restglassfishhelloworld.dto;
 
-public record HelloDTO(String message) {
+public class HelloDTO {
+    private final String message;
+
+    public HelloDTO(String message) {
+        this.message = message;
+    }
 
     public String getMessage() {
         return message;
