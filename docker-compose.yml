@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  glassfish:
+    image: 'omnifish/glassfish:7.0.4'
+    container_name: glassfish_server
+    ports:
+      - '8080:8080'
+      - '4848:4848'
+    volumes:
+      - './deployments:/opt/glassfish7/glassfish/domains/domain1/autodeploy'
