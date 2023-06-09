@@ -3,6 +3,7 @@ package com.twb.restglassfishhelloworld.service;
 import com.twb.restglassfishhelloworld.config.LiquibaseStartupHandler;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import org.jvnet.hk2.annotations.Service;
 
@@ -16,9 +17,18 @@ public class TransactionService {
                 .createEntityManagerFactory(LiquibaseStartupHandler.PERSISTENCE_UNIT_NAME);
              EntityManager entityManager = factory.createEntityManager()) {
 
-            entityManager.getTransaction().begin();
-            consumer.accept(entityManager);
-            entityManager.getTransaction().commit();
+            EntityTransaction transaction = entityManager.getTransaction();
+
+            try {
+
+                transaction.begin();
+                consumer.accept(entityManager);
+                transaction.commit();
+
+            } catch (Exception e) {
+                transaction.rollback();
+                throw e;
+            }
         }
     }
 }
