@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Root;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractRepository<T> {
     private final Class<T> clazz;
@@ -31,9 +32,9 @@ public abstract class AbstractRepository<T> {
         return entity;
     }
 
-    public T findById(Long id) {
+    public Optional<T> findById(Long id) {
         return transactionService.runInTransaction(em -> {
-            return em.find(clazz, id);
+            return Optional.ofNullable(em.find(clazz, id));
         });
     }
 

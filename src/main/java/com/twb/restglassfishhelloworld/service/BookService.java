@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -26,11 +27,11 @@ public class BookService {
     }
 
     public BookDTO getBookById(Long id) {
-        Book book = repository.findById(id);
-        if (book == null) {
+        Optional<Book> book = repository.findById(id);
+        if (book.isEmpty()) {
             throw new BookException("Book not found: " + id);
         }
-        return mapper.bookToBookDto(book);
+        return mapper.bookToBookDto(book.get());
     }
 
     public List<BookDTO> getBooks() {
