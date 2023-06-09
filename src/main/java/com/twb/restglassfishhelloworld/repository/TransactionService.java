@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.service;
+package com.twb.restglassfishhelloworld.repository;
 
 import com.twb.restglassfishhelloworld.config.LiquibaseStartupHandler;
 import jakarta.persistence.EntityManager;

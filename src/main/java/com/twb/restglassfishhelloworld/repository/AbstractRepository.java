@@ -1,7 +1,6 @@
 package com.twb.restglassfishhelloworld.repository;
 
 
-import com.twb.restglassfishhelloworld.service.TransactionService;
 import jakarta.inject.Inject;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
