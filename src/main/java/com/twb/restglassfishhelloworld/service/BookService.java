@@ -13,9 +13,12 @@ public class BookService {
     @Inject
     private BookRepository repository;
 
+    @Inject
+    private BookMapper mapper;
+
     public BookDTO createBook(CreateBookDTO dto) {
-        Book book = BookMapper.INSTANCE.createBookDtoToBook(dto);
+        Book book = mapper.createBookDtoToBook(dto);
         repository.save(book);
-        return BookMapper.INSTANCE.bookToBookDto(book);
+        return mapper.bookToBookDto(book);
     }
 }
