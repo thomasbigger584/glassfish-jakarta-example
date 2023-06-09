@@ -20,10 +20,10 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 @WebListener
-public class DatabaseConfiguration implements ServletContextListener {
+public class LiquibaseStartupHandler implements ServletContextListener {
     public static final String PERSISTENCE_UNIT_NAME = "default";
     private static final String CHANGELOG_FILE_LOCATION = "db/changelog.xml";
-    private final Logger logger = Logger.getLogger(DatabaseConfiguration.class.getName());
+    private final Logger logger = Logger.getLogger(LiquibaseStartupHandler.class.getSimpleName());
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -37,10 +37,10 @@ public class DatabaseConfiguration implements ServletContextListener {
                 try {
                     Database database = DatabaseFactory.getInstance()
                             .findCorrectDatabaseImplementation(new JdbcConnection(connection));
-                    CommandScope updateCommand = new CommandScope(UpdateCommandStep.COMMAND_NAME);
-                    updateCommand.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database);
-                    updateCommand.addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, CHANGELOG_FILE_LOCATION);
-                    updateCommand.execute();
+                    CommandScope command = new CommandScope(UpdateCommandStep.COMMAND_NAME);
+                    command.addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database);
+                    command.addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, CHANGELOG_FILE_LOCATION);
+                    command.execute();
                     logger.info("Liquibase update completed successfully.");
                 } catch (DatabaseException | CommandExecutionException e) {
                     throw new SQLException("Failed execute liquibase update", e);

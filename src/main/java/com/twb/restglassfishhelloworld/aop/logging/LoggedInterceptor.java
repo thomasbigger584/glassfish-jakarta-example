@@ -15,7 +15,7 @@ public class LoggedInterceptor {
 
     @AroundInvoke
     public Object logMethodInvocation(InvocationContext context) throws Exception {
-        String className = context.getTarget().getClass().getSimpleName();
+        String className = context.getTarget().getClass().getName();
         String methodName = context.getMethod().getName();
         Object[] parameters = context.getParameters();
         String parameterString = Arrays.toString(parameters)

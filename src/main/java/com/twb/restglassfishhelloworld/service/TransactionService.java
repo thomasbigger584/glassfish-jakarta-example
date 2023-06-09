@@ -1,6 +1,6 @@
 package com.twb.restglassfishhelloworld.service;
 
-import com.twb.restglassfishhelloworld.config.DatabaseConfiguration;
+import com.twb.restglassfishhelloworld.config.LiquibaseStartupHandler;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -13,7 +13,7 @@ public class TransactionService {
 
     public void runInTransaction(Consumer<EntityManager> consumer) {
         try (EntityManagerFactory factory = Persistence
-                .createEntityManagerFactory(DatabaseConfiguration.PERSISTENCE_UNIT_NAME);
+                .createEntityManagerFactory(LiquibaseStartupHandler.PERSISTENCE_UNIT_NAME);
              EntityManager entityManager = factory.createEntityManager()) {
 
             entityManager.getTransaction().begin();
