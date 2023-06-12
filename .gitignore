@@ -1,6 +1,3 @@
-deployments/**
-!deployments/.gitkeep
-
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij,maven,macos,visualstudiocode,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij,maven,macos,visualstudiocode,eclipse
 
