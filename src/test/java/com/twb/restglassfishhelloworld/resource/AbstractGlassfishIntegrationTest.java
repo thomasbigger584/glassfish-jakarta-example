@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class AbstractGlassfishIntegrationTest {
+public abstract class AbstractGlassfishIntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger("IntegrationTest");
 
     private static final String DOCKER_COMPOSE_LOCATION = "src/test/resources/";
