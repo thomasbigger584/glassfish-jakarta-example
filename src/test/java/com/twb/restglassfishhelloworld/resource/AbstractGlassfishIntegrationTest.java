@@ -30,36 +30,37 @@ public class AbstractGlassfishIntegrationTest {
     private static final String DATABASE_PASSWORD = "root";
     private static final String DATABASE_SCHEMA_NAME = "helloworld";
     private static final String[] DATABASE_TABLE_NAMES = {"book"};
+    private static final String EXECUTE_TRUNCATE_TABLES_SQL = "mysql -u %s -p%s -e 'use %s; truncate %s;'";
 
-    public static DockerComposeContainer compose;
+    public static DockerComposeContainer dockerComposeContainer;
 
     @BeforeAll
     public static void beforeAll() {
         File file = new File(DOCKER_COMPOSE_LOCATION + TEST_DOCKER_COMPOSE_YML);
-        compose = new DockerComposeContainer(file)
+        dockerComposeContainer = new DockerComposeContainer(file)
                 .withExposedService(GLASSFISH_SERVICE_NAME, GLASSFISH_SERVICE_PORT)
                 .withLogConsumer(GLASSFISH_SERVICE_NAME, new Slf4jLogConsumer(logger).withPrefix(GLASSFISH_SERVICE_NAME))
                 .waitingFor(GLASSFISH_SERVICE_NAME, new LogMessageWaitStrategy()
                         .withRegEx(".*Successfully autodeployed : /opt/glassfish7/glassfish/domains/domain1/autodeploy/" + ARTIFACT_NAME + ".war.*"));
-        compose.start();
+        dockerComposeContainer.start();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
         Optional<ContainerState> containerStateOpt =
-                compose.getContainerByServiceName(MYSQL_DATABASE_SERVICE_NAME);
+                dockerComposeContainer.getContainerByServiceName(MYSQL_DATABASE_SERVICE_NAME);
         if (containerStateOpt.isPresent()) {
             ContainerState containerState = containerStateOpt.get();
             String tablesStr = Arrays.toString(DATABASE_TABLE_NAMES)
                     .replace("[", "")
                     .replace("]", "");
-            containerState.execInContainer(String.format("mysql -u %s -p%s -e 'use %s; truncate %s;'",
+            containerState.execInContainer(String.format(EXECUTE_TRUNCATE_TABLES_SQL,
                     DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_SCHEMA_NAME, tablesStr));
         }
     }
 
     @AfterAll
     public static void afterAll() {
-        compose.stop();
+        dockerComposeContainer.stop();
     }
 }
