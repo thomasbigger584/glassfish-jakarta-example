@@ -1,18 +1,23 @@
 package com.twb.restglassfishhelloworld.resource;
 
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.ContainerState;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Optional;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public abstract class AbstractGlassfishIntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger("IntegrationTest");
@@ -20,17 +25,10 @@ public abstract class AbstractGlassfishIntegrationTest {
     private static final String DOCKER_COMPOSE_LOCATION = "src/test/resources/";
     private static final String TEST_DOCKER_COMPOSE_YML = "test-docker-compose.yml";
     private static final String GLASSFISH_SERVICE_NAME = "glassfish";
-    private static final String MYSQL_DATABASE_SERVICE_NAME = "mysql_database";
 
     private static final String ARTIFACT_NAME = "RestGlassfishHelloWorld-1.0-SNAPSHOT";
     private static final int GLASSFISH_SERVICE_PORT = 8080;
     protected static final String API_BASE_URL = String.format("http://localhost:%d/%s/api", GLASSFISH_SERVICE_PORT, ARTIFACT_NAME);
-
-    private static final String DATABASE_USERNAME = "root";
-    private static final String DATABASE_PASSWORD = "root";
-    private static final String DATABASE_SCHEMA_NAME = "helloworld";
-    private static final String[] DATABASE_TABLE_NAMES = {"book"};
-    private static final String EXECUTE_TRUNCATE_TABLES_SQL = "mysql -u %s -p%s -e 'use %s; truncate %s;'";
 
     public static DockerComposeContainer dockerComposeContainer;
 
@@ -45,22 +43,42 @@ public abstract class AbstractGlassfishIntegrationTest {
         dockerComposeContainer.start();
     }
 
-    @BeforeEach
-    public void beforeEach() throws Exception {
-        Optional<ContainerState> containerStateOpt =
-                dockerComposeContainer.getContainerByServiceName(MYSQL_DATABASE_SERVICE_NAME);
-        if (containerStateOpt.isPresent()) {
-            ContainerState containerState = containerStateOpt.get();
-            String tablesStr = Arrays.toString(DATABASE_TABLE_NAMES)
-                    .replace("[", "")
-                    .replace("]", "");
-            containerState.execInContainer(String.format(EXECUTE_TRUNCATE_TABLES_SQL,
-                    DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_SCHEMA_NAME, tablesStr));
-        }
-    }
-
     @AfterAll
     public static void afterAll() {
         dockerComposeContainer.stop();
+    }
+
+    protected static <ResultBody, RequestBody> ApiHttpResponse<ResultBody> post(Class<ResultBody> resultClass,
+                                                                                RequestBody requestBody, String endpoint) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(requestBody);
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_BASE_URL + endpoint))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        ResultBody result = objectMapper.readValue(response.body(), resultClass);
+        return new ApiHttpResponse<>(response, result);
+    }
+
+    protected static <ResultBody> ApiHttpResponse<ResultBody> get(Class<ResultBody> resultClass, String endpoint) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_BASE_URL + endpoint))
+                .GET()
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        ResultBody result = objectMapper.readValue(response.body(), resultClass);
+        return new ApiHttpResponse<>(response, result);
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    protected static class ApiHttpResponse<ResultBody> {
+        private final HttpResponse<String> originalHttpResponse;
+        private final ResultBody resultBody;
     }
 }
