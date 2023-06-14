@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BookResourceIntegrationTest extends AbstractGlassfishIntegrationTest {
+class BookResourceIntegrationTest extends AbstractIntegrationTest {
     private static final String TEST_BOOK_NAME = "test-book-name";
 
     @Test
