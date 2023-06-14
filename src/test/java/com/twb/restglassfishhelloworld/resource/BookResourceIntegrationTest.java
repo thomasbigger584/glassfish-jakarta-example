@@ -21,11 +21,11 @@ class BookResourceIntegrationTest extends AbstractIntegrationTest {
         createBookDTO.setName(TEST_BOOK_NAME);
 
         ApiHttpResponse<BookDTO> response = post(BookDTO.class, createBookDTO, endpoint);
-        HttpResponse<String> httpResponse = response.getOriginalHttpResponse();
-        BookDTO bookDTO = response.getResultBody();
 
+        HttpResponse<String> httpResponse = response.getHttpResponse();
         assertEquals(HttpStatus.CREATED_201.getStatusCode(), httpResponse.statusCode());
 
+        BookDTO bookDTO = response.getResultBody();
         assertTrue(bookDTO.getId() > 0);
         assertEquals(createBookDTO.getName(), bookDTO.getName());
     }

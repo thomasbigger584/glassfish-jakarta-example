@@ -74,7 +74,7 @@ public abstract class AbstractIntegrationTest {
     @Getter
     @RequiredArgsConstructor
     protected static class ApiHttpResponse<ResultBody> {
-        private final HttpResponse<String> originalHttpResponse;
+        private final HttpResponse<String> httpResponse;
         private final ResultBody resultBody;
     }
 }
