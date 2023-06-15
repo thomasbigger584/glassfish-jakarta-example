@@ -1,6 +1,6 @@
-package com.twb.restglassfishhelloworld.repository;
+package com.twb.bookapp.repository;
 
-import com.twb.restglassfishhelloworld.config.LiquibaseStartupHandler;
+import com.twb.bookapp.config.LiquibaseStartupHandler;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;

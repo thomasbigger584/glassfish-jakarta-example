@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.twb</groupId>
-    <artifactId>RestGlassfishHelloWorld</artifactId>
+    <artifactId>book-app</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>RestGlassfishHelloWorld</name>
+    <name>book-app-jakarta-ee</name>
     <packaging>war</packaging>
 
     <properties>

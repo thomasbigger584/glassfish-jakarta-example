@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.aop.logging;
+package com.twb.bookapp.aop.logging;
 
 import jakarta.interceptor.InterceptorBinding;
 

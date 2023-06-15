@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.config;
+package com.twb.bookapp.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

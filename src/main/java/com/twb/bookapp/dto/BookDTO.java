@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.dto;
+package com.twb.bookapp.dto;
 
 import lombok.Data;
 

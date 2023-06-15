@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld;
+package com.twb.bookapp;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

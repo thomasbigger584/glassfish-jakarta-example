@@ -1,9 +1,9 @@
-package com.twb.restglassfishhelloworld.resource;
+package com.twb.bookapp.resource;
 
-import com.twb.restglassfishhelloworld.aop.logging.Logged;
-import com.twb.restglassfishhelloworld.dto.BookDTO;
-import com.twb.restglassfishhelloworld.dto.CreateBookDTO;
-import com.twb.restglassfishhelloworld.service.BookService;
+import com.twb.bookapp.aop.logging.Logged;
+import com.twb.bookapp.dto.BookDTO;
+import com.twb.bookapp.dto.CreateBookDTO;
+import com.twb.bookapp.service.BookService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

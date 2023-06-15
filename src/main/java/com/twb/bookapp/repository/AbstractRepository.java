@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.repository;
+package com.twb.bookapp.repository;
 
 
 import jakarta.inject.Inject;

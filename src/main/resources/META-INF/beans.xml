@@ -4,6 +4,6 @@
        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd"
        bean-discovery-mode="all">
     <interceptors>
-        <class>com.twb.restglassfishhelloworld.aop.logging.LoggedInterceptor</class>
+        <class>com.twb.bookapp.aop.logging.LoggedInterceptor</class>
     </interceptors>
 </beans>

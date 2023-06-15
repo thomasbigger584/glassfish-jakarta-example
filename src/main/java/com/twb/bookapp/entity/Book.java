@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.entity;
+package com.twb.bookapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

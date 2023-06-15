@@ -1,6 +1,6 @@
-package com.twb.restglassfishhelloworld.repository;
+package com.twb.bookapp.repository;
 
-import com.twb.restglassfishhelloworld.entity.Book;
+import com.twb.bookapp.entity.Book;
 import org.jvnet.hk2.annotations.Service;
 
 @Service

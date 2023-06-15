@@ -1,11 +1,11 @@
-package com.twb.restglassfishhelloworld.service;
+package com.twb.bookapp.service;
 
-import com.twb.restglassfishhelloworld.dto.BookDTO;
-import com.twb.restglassfishhelloworld.dto.CreateBookDTO;
-import com.twb.restglassfishhelloworld.entity.Book;
-import com.twb.restglassfishhelloworld.exception.BookException;
-import com.twb.restglassfishhelloworld.mapper.BookMapper;
-import com.twb.restglassfishhelloworld.repository.BookRepository;
+import com.twb.bookapp.dto.BookDTO;
+import com.twb.bookapp.dto.CreateBookDTO;
+import com.twb.bookapp.entity.Book;
+import com.twb.bookapp.exception.BookException;
+import com.twb.bookapp.mapper.BookMapper;
+import com.twb.bookapp.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

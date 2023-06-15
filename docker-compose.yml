@@ -7,7 +7,7 @@ services:
       - SYS_NICE
     restart: always
     environment:
-      - MYSQL_DATABASE=helloworld
+      - MYSQL_DATABASE=bookapp
       - MYSQL_ROOT_PASSWORD=root
     ports:
       - 3306:3306
@@ -23,7 +23,7 @@ services:
       - 8080:8080
       - 4848:4848
     volumes:
-      - ./target/RestGlassfishHelloWorld-1.0-SNAPSHOT.war:/opt/glassfish7/glassfish/domains/domain1/autodeploy/RestGlassfishHelloWorld-1.0-SNAPSHOT.war:ro
+      - ./target/book-app-1.0-SNAPSHOT.war:/opt/glassfish7/glassfish/domains/domain1/autodeploy/book-app-1.0-SNAPSHOT.war:ro
     networks:
       - database_network
     depends_on:

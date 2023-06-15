@@ -1,4 +1,4 @@
-package com.twb.restglassfishhelloworld.exception;
+package com.twb.bookapp.exception;
 
 public class BookException extends RuntimeException {
 
