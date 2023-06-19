@@ -1,7 +1,5 @@
 package com.twb.bookapp.config;
 
-import jakarta.enterprise.inject.Default;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -24,19 +22,20 @@ import java.util.logging.Logger;
 
 @WebListener
 public class LiquibaseStartupHandler implements ServletContextListener {
+    public static final String PERSISTENCE_UNIT_NAME = "default";
     private static final String CHANGELOG_FILE_LOCATION = "db/changelog.xml";
     private final Logger logger = Logger.getLogger(LiquibaseStartupHandler.class.getSimpleName());
-
-    @Inject
-    @Default
-    private EntityManager em;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         logger.info("Starting liquibase update...");
 
-        Session session = em.unwrap(Session.class);
-        session.doWork(this::executeLiquibaseUpdate);
+        try (EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+             EntityManager em = factory.createEntityManager()) {
+
+            Session session = em.unwrap(Session.class);
+            session.doWork(this::executeLiquibaseUpdate);
+        }
     }
 
     private void executeLiquibaseUpdate(Connection connection) throws SQLException {
